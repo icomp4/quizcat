@@ -25,6 +25,11 @@ func (u *UserHandler) CreateUser(c fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
+	if user.Email == "" || user.Username == "" || user.Password == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "missing required fields",
+		})
+	}
 
 	if err := u.service.CreateUser(&user); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -32,8 +37,8 @@ func (u *UserHandler) CreateUser(c fiber.Ctx) error {
 		})
 	}
 	resp := fiber.Map{
-		"message": "User created successfully",
+		"message": "Signup successful!",
 	}
 	return c.Status(fiber.StatusCreated).JSON(resp)
 
-}	
+}

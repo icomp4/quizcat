@@ -19,7 +19,11 @@ func main() {
 			id SERIAL PRIMARY KEY,
 			title TEXT NOT NULL,
 			author_id INTEGER REFERENCES users(id),
-			rating FLOAT NOT NULL
+			rating FLOAT NOT NULL,
+			daily_plays INTEGER NOT NULL,
+			weekly_plays INTEGER NOT NULL,
+			monthly_plays INTEGER NOT NULL,
+			all_time_plays INTEGER NOT NULL
 		)`,
 		`CREATE TABLE IF NOT EXISTS questions (
 			id SERIAL PRIMARY KEY,

@@ -55,3 +55,22 @@ func (q *QuizHandler) GetQuizByID(c fiber.Ctx) error {
 	}
 	return c.JSON(quiz)
 }		
+
+func (q *QuizHandler) IncrementPlays(c fiber.Ctx) error {
+	id := c.Params("id")
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	if err := q.service.IncrementPlays(intID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	resp := fiber.Map{
+		"message": "Plays incremented successfully",
+	}
+	return c.Status(fiber.StatusOK).JSON(resp)
+}

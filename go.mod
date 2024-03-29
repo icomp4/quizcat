@@ -6,6 +6,7 @@ require (
 	github.com/gofiber/fiber/v3 v3.0.0-20240328094538-dfe5c6fd0427
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/joho/godotenv v1.5.1
+	github.com/robfig/cron/v3 v3.0.1
 )
 
 require (

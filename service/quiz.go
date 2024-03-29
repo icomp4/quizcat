@@ -25,9 +25,8 @@ func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
 			tx.Rollback()
 		}
 	}()
-
 	var quizID uint
-	err = tx.QueryRow("INSERT INTO quizzes (title, author_id, rating) VALUES ($1, $2, $3) RETURNING id", quiz.Title, quiz.AuthorID, quiz.Rating).Scan(&quizID)
+	err = tx.QueryRow("INSERT INTO quizzes (title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id", quiz.Title, quiz.AuthorID, quiz.Rating, 0, 0, 0, 0).Scan(&quizID)
 	if err != nil {
 		return fmt.Errorf("error creating quiz: %w", err)
 	}
@@ -103,3 +102,10 @@ func (q *QuizService) getOptionsByQuestionID(id uint) ([]model.Option, error) {
 	return options, nil
 }
 
+func (q *QuizService) IncrementPlays(id int) error {
+	_, err := q.db.Exec("UPDATE quizzes SET daily_plays = daily_plays + 1, weekly_plays = weekly_plays + 1, monthly_plays = monthly_plays + 1, all_time_plays = all_time_plays + 1 WHERE id = $1", id)
+	if err != nil {
+		return fmt.Errorf("error incrementing plays: %w", err)
+	}
+	return nil
+}

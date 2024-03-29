@@ -5,6 +5,10 @@ type Quiz struct {
 	Title    string `db:"title" json:"title"`
 	AuthorID uint   `db:"author_id" json:"author_id"`
 	Rating   float32 `db:"rating" json:"rating"`
+	DailyPlays uint `db:"daily_plays" json:"daily_plays"`
+	WeeklyPlays uint `db:"weekly_plays" json:"weekly_plays"`
+	MonthlyPlays uint `db:"monthly_plays" json:"monthly_plays"`
+	AllTimePlays uint `db:"all_time_plays" json:"all_time_plays"`
 	Questions []Question 
 }
 

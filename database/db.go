@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"quizcat/migrate"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
@@ -25,6 +24,5 @@ func New() *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-    migrate.AutoMigrate(db)
 	return db
 }
