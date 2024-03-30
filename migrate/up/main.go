@@ -20,6 +20,7 @@ func main() {
 			title TEXT NOT NULL,
 			author_id INTEGER REFERENCES users(id),
 			rating FLOAT NOT NULL,
+			amount_of_ratings INTEGER NOT NULL,
 			daily_plays INTEGER NOT NULL,
 			weekly_plays INTEGER NOT NULL,
 			monthly_plays INTEGER NOT NULL,

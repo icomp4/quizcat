@@ -10,6 +10,7 @@ import (
 	"quizcat/util"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/logger"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -22,6 +23,7 @@ func main() {
 	userHandler := handler.NewUserHandler(*userService)
 
 	app := server.New(fiber.New(), *quizHandler, *userHandler)
+	app.App.Use(logger.New())
 	server.SetupRoutes(app)
 	log.Fatal(app.App.Listen(":" + os.Getenv("PORT")))
 	util.StartPlayCountResetScheduler(db)

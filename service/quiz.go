@@ -26,7 +26,7 @@ func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
 		}
 	}()
 	var quizID uint
-	err = tx.QueryRow("INSERT INTO quizzes (title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id", quiz.Title, quiz.AuthorID, quiz.Rating, 0, 0, 0, 0).Scan(&quizID)
+	err = tx.QueryRow("INSERT INTO quizzes (title, author_id, rating, amount_of_ratings, daily_plays, weekly_plays, monthly_plays, all_time_plays) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id", quiz.Title, quiz.AuthorID, quiz.Rating, 0, 0, 0, 0, 0).Scan(&quizID)
 	if err != nil {
 		return fmt.Errorf("error creating quiz: %w", err)
 	}
@@ -49,6 +49,23 @@ func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
 	}
 
 	return nil
+}
+func (q *QuizService) GetQuizzes() ([]model.Quiz, error) {
+	quizzes := []model.Quiz{}
+	rows, err := q.db.Query("SELECT id, title, author_id, rating FROM quizzes")
+	if err != nil {
+		return nil, fmt.Errorf("error getting quizzes: %w", err)
+	}
+	for rows.Next() {
+		quiz := model.Quiz{}
+		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning quiz: %w", err)
+		}
+		quizzes = append(quizzes, quiz)
+	}
+	defer rows.Close()
+	return quizzes, nil
 }
 
 func (q *QuizService) GetQuizByID(id int) (*model.Quiz, error) {
@@ -108,4 +125,28 @@ func (q *QuizService) IncrementPlays(id int) error {
 		return fmt.Errorf("error incrementing plays: %w", err)
 	}
 	return nil
+}
+
+func (q *QuizService) RateQuiz(id int, rating float32) error {
+	var amountOfRatings int
+	var currentRating float32
+	err := q.db.QueryRow("SELECT rating, amount_of_ratings FROM quizzes WHERE id = $1", id).Scan(&currentRating, &amountOfRatings)
+	if err != nil {
+		return fmt.Errorf("error getting rating: %w", err)
+	}
+	newRating := (currentRating * float32(amountOfRatings) + rating) / float32(amountOfRatings + 1)
+	_, err = q.db.Exec("UPDATE quizzes SET rating = $1, amount_of_ratings = $2 WHERE id = $3", newRating, amountOfRatings + 1, id)
+	if err != nil {
+		return fmt.Errorf("error rating quiz: %w", err)
+	}
+	return nil
+}
+
+func (q *QuizService) GetRating(id int) (float32, error) {
+	var rating float32
+	err := q.db.QueryRow("SELECT rating FROM quizzes WHERE id = $1", id).Scan(&rating)
+	if err != nil {
+		return 0, fmt.Errorf("error getting rating: %w", err)
+	}
+	return rating, nil
 }
