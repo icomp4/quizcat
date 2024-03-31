@@ -37,6 +37,18 @@ func main() {
 			text TEXT NOT NULL,
 			is_correct BOOLEAN NOT NULL
 		)`,
+		`CREATE TABLE categories (
+			id SERIAL PRIMARY KEY,
+			name VARCHAR(255)
+		);`,
+		`
+		CREATE TABLE quiz_categories (
+			quiz_id INTEGER,
+			category_id INTEGER,
+			PRIMARY KEY (quiz_id, category_id),
+			FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE,
+			FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+		);`,
 	}
 
 	for _, query := range queries {

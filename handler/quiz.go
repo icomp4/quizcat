@@ -78,17 +78,6 @@ func (q *QuizHandler) IncrementPlays(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
-
-func (q *QuizHandler) GetQuizzes(c fiber.Ctx) error {
-	quizzes, err := q.service.GetQuizzes()
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-	return c.JSON(quizzes)
-}
-
 func (q *QuizHandler) RateQuiz(c fiber.Ctx) error {
 	type Rating struct {
 		Rating float32 `json:"rating"`
@@ -137,5 +126,27 @@ func (q *QuizHandler) GetRating(c fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.JSON(rating)	
+	return c.JSON(rating)
+}
+
+func (q *QuizHandler) GetTopQuizzesPerPeriod(c fiber.Ctx) error {
+	period := c.Params("period")
+	quizzes, err := q.service.GetTopQuizzesPerPeriod(period)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(quizzes)
+}
+
+func (q *QuizHandler) SearchQuizzes(c fiber.Ctx) error {
+	search := c.Query("param")
+	quizzes, err := q.service.SearchQuizzes(search)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(quizzes)
 }
