@@ -1,10 +1,10 @@
-# QuizCat
+# quizCat
 
-QuizCat is a dynamic web application designed for creating and interacting with quizzes. Built with Go and the Fiber framework, it offers a lightweight, yet powerful platform for users to explore, learn or just have fun! Users can create quizzes, rate them, and track quiz plays over various periods. Additionally, QuizCat supports user authentication and categorization of quizzes, enhancing the organization and accessibility of content.
+quizCat is a dynamic web application designed for creating and interacting with quizzes. Built with Go and the Fiber framework, it offers a lightweight, yet powerful platform for users to explore, learn or just have fun! Users can create quizzes, rate them, and track quiz plays over various periods. Additionally, QuizCat supports user authentication and categorization of quizzes, enhancing the organization and accessibility of content.
 
 ## Features
 
-QuizCat provides several endpoints for managing quizzes, users, and categories:
+quizCat provides several endpoints for managing quizzes, users, and categories:
 
 ### Quiz Endpoints
 
