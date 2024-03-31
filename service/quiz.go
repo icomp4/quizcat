@@ -198,13 +198,13 @@ func (q *QuizService) GetTopQuizzesPerPeriod(period string) ([]model.Quiz, error
 
 func (q *QuizService) GetQuizzesByCategory(category string) ([]model.Quiz, error) {
 	quizzes := []model.Quiz{}
-	rows, err := q.db.Query("SELECT q.id, q.title, q.author_id, q.rating FROM quizzes q JOIN quiz_categories qc ON q.id = qc.quiz_id JOIN categories c ON c.id = qc.category_id WHERE c.name = $1", category)
+	rows, err := q.db.Query("SELECT q.id, q.title, q.author_id, q.rating, q.daily_plays, q.weekly_plays, q.monthly_plays, q.all_time_plays FROM quizzes q JOIN quiz_categories qc ON q.id = qc.quiz_id JOIN categories c ON c.id = qc.category_id WHERE c.name = $1", category)
 	if err != nil {
 		return nil, fmt.Errorf("error getting quizzes: %w", err)
 	}
 	for rows.Next() {
 		quiz := model.Quiz{}
-		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating)
+		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning quiz: %w", err)
 		}
@@ -216,7 +216,7 @@ func (q *QuizService) GetQuizzesByCategory(category string) ([]model.Quiz, error
 
 func (q *QuizService) SearchQuizzes(search string) ([]model.Quiz, error) {
     quizzes := []model.Quiz{}
-    rows, err := q.db.Query("SELECT id, title, author_id, rating FROM quizzes WHERE LOWER(title) LIKE $1", "%" + search + "%")
+    rows, err := q.db.Query("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays FROM quizzes WHERE LOWER(title) LIKE $1", "%" + search + "%")
     if err != nil {
         return nil, fmt.Errorf("error getting quizzes: %w", err)
     }
@@ -224,7 +224,7 @@ func (q *QuizService) SearchQuizzes(search string) ([]model.Quiz, error) {
 
     for rows.Next() {
         quiz := model.Quiz{}
-        err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating)
+        err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays)
         if err != nil {
             return nil, fmt.Errorf("error scanning quiz: %w", err)
         }

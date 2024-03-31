@@ -1,9 +1,6 @@
 package server
 
-import "quizcat/auth"
-
 func SetupRoutes(s *Server) {
-	authMiddleware := auth.ValidateUser(s.Session)
 
 	// quiz handlers
 	// quizGroup := s.App.Group("/api/quiz", authMiddleware)
@@ -25,7 +22,6 @@ func SetupRoutes(s *Server) {
 	// user handlers
 	s.App.Post("/api/signup", s.UserHandler.CreateUser)
 	s.App.Post("/api/login", s.UserHandler.Login)
-	s.App.Get("/api/authTest", s.UserHandler.Test, authMiddleware)
 
 	// category handlers
 	s.App.Post("/api/category", s.CategoryHandler.CreateCategory)
