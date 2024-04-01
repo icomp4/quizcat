@@ -8,30 +8,33 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/session"
 )
 
 type QuizHandler struct {
 	service service.QuizService
+	store   *session.Store
 	logger  slog.Logger
 }
 
-func NewQuizHandler(service service.QuizService, logger slog.Logger) *QuizHandler {
+func NewQuizHandler(service service.QuizService,session *session.Store, logger slog.Logger) *QuizHandler {
 	return &QuizHandler{
 		service: service,
+		store:   session,
 		logger:  logger,
 	}
 }
-func(q *QuizHandler) writeErrorWithLog(c fiber.Ctx, status int, message string) error {
-    q.logger.Error(message)
-    return c.Status(status).JSON(fiber.Map{
-        "error": message,
-    })
+func (q *QuizHandler) writeErrorWithLog(c fiber.Ctx, status int, message string) error {
+	q.logger.Error(message)
+	return c.Status(status).JSON(fiber.Map{
+		"error": message,
+	})
 }
 
-func(q *QuizHandler) writeError(c fiber.Ctx, status int, message string) error {
-    return c.Status(status).JSON(fiber.Map{
-        "error": message,
-    })
+func (q *QuizHandler) writeError(c fiber.Ctx, status int, message string) error {
+	return c.Status(status).JSON(fiber.Map{
+		"error": message,
+	})
 }
 func (q *QuizHandler) CreateQuiz(c fiber.Ctx) error {
 	var quiz model.Quiz
@@ -45,7 +48,7 @@ func (q *QuizHandler) CreateQuiz(c fiber.Ctx) error {
 	quiz.Rating = 0
 	quiz.AmountOfRatings = 0
 	if err := q.service.CreateQuiz(&quiz); err != nil {
-		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())	
+		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
 	resp := fiber.Map{
 		"message": "Quiz created successfully",
@@ -140,4 +143,27 @@ func (q *QuizHandler) SearchQuizzes(c fiber.Ctx) error {
 		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(quizzes)
+}
+
+func (q *QuizHandler) DeleteQuiz(c fiber.Ctx) error {
+	id := c.Params("id")
+	sess, err := q.store.Get(c)
+	if err != nil {
+		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	userID, ok := sess.Get("userID").(int)
+	if !ok {
+		return q.writeError(c, fiber.StatusUnauthorized, "Unauthorized")
+	}
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
+	}
+	if err := q.service.DeleteQuiz(userID, intID); err != nil {
+		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	resp := fiber.Map{
+		"message": "Quiz deleted successfully",
+	}
+	return c.Status(fiber.StatusOK).JSON(resp)
 }

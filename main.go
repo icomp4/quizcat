@@ -22,12 +22,14 @@ func main() {
 	quizService := service.NewQuizService(db)
 	userService := service.NewUserService(db)
 	categoryService := service.NewCategoryService(db)
+	questionService := service.NewQuestionService(db)
 
-	quizHandler := handler.NewQuizHandler(*quizService, *logger)
+	quizHandler := handler.NewQuizHandler(*quizService, store, *logger)
 	userHandler := handler.NewUserHandler(*userService, store, *logger)
 	categoryHandler := handler.NewCategoryHandler(*categoryService, store, *logger)
+	questionHandler := handler.NewQuestionHandler(*questionService, store, *logger)
 
-	app := server.New(fiber.New(), quizHandler, userHandler, categoryHandler, store)
+	app := server.New(fiber.New(), quizHandler, userHandler, categoryHandler, questionHandler, store)
 	server.SetupRoutes(app)
 	log.Fatal(app.App.Listen(":" + os.Getenv("PORT")))
 	util.StartPlayCountResetScheduler(db)

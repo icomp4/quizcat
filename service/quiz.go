@@ -233,3 +233,31 @@ func (q *QuizService) SearchQuizzes(search string) ([]model.Quiz, error) {
 
     return quizzes, nil
 }
+
+func (q *QuizService) DeleteQuiz(userID, id int) error {
+	tx, err := q.db.Begin()
+	if err != nil {
+		return fmt.Errorf("error starting transaction: %w", err)
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+	var authorID int
+	err = tx.QueryRow("SELECT author_id FROM quizzes WHERE id = $1", id).Scan(&authorID)
+	if err != nil {
+		return fmt.Errorf("error getting author: %w", err)
+	}
+	if authorID != userID {
+		return fmt.Errorf("unauthorized")
+	}
+	_, err = tx.Exec("DELETE FROM quizzes WHERE id = $1", id)
+	if err != nil {
+		return fmt.Errorf("error deleting quiz: %w", err)
+	}
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("error committing transaction: %w", err)
+	}
+	return nil
+}

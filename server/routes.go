@@ -18,6 +18,7 @@ func SetupRoutes(s *Server) {
 	s.App.Get("/api/quiz/:id/rating", s.QuizHandler.GetRating)
 	s.App.Get("/api/quizzes/top/:period", s.QuizHandler.GetTopQuizzesPerPeriod)
 	s.App.Get("/api/quizzes/search", s.QuizHandler.SearchQuizzes)
+	s.App.Delete("/api/quiz/:id", s.QuizHandler.DeleteQuiz)
 
 	// user handlers
 	s.App.Post("/api/signup", s.UserHandler.CreateUser)
@@ -28,5 +29,16 @@ func SetupRoutes(s *Server) {
 	s.App.Get("/api/categories", s.CategoryHandler.GetCategories)
 	s.App.Post("/api/quiz/:id/category", s.CategoryHandler.AssignCategoryToQuiz)
 	s.App.Get("/api/quizzes/category/:category", s.CategoryHandler.GetQuizzesByCategory)
+
+	// question handlers
+	s.App.Post("/api/quiz/:quizID/question", s.QuestionHandler.CreateQuestion)
+	s.App.Put("/api/question/:id", s.QuestionHandler.EditQuestion)
+	s.App.Delete("/api/question/:id", s.QuestionHandler.DeleteQuestion)
+
+	// option handlers
+	s.App.Post("/api/question/:questionID/option", s.QuestionHandler.CreateOption)
+	s.App.Put("/api/option/:id/text", s.QuestionHandler.EditOption)
+	s.App.Put("/api/option/:id/correct", s.QuestionHandler.EditOptionCorrect)
+	s.App.Delete("/api/option/:id", s.QuestionHandler.DeleteOption)
 
 }
