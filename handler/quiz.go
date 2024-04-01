@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"quizcat/model"
 	"quizcat/service"
+	"quizcat/util"
 	"strconv"
 
 	"github.com/gofiber/fiber/v3"
@@ -151,8 +152,8 @@ func (q *QuizHandler) DeleteQuiz(c fiber.Ctx) error {
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
-	userID, ok := sess.Get("userID").(int)
-	if !ok {
+	userID, err := util.GetUserIDFromSession(*sess)
+	if err != nil {
 		return q.writeError(c, fiber.StatusUnauthorized, "Unauthorized")
 	}
 	intID, err := strconv.Atoi(id)

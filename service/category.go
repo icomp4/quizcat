@@ -2,6 +2,7 @@ package service
 
 import (
 	"database/sql"
+	"fmt"
 	"quizcat/model"
 )
 
@@ -39,8 +40,16 @@ func (q *CategoryService) GetCategories() ([]string, error) {
 	return categories, nil
 }
 
-func (q *CategoryService) AssignCategoryToQuiz(quizID int, categoryID int) error {
-	_, err := q.db.Exec("INSERT INTO quiz_categories (quiz_id, category_id) VALUES ($1, $2)", quizID, categoryID)
+func (q *CategoryService) AssignCategoryToQuiz(userID int, quizID int, categoryID int) error {
+	var quizownerID int
+	err := q.db.QueryRow("SELECT author_id FROM quizzes WHERE id = $1", quizID).Scan(&quizownerID)
+	if err != nil {
+		return err
+	}
+	if quizownerID != userID {
+		return fmt.Errorf("only the author of the quiz can assign categories to it")
+	}
+	_, err = q.db.Exec("INSERT INTO quiz_categories (quiz_id, category_id) VALUES ($1, $2)", quizID, categoryID)
 	if err != nil {
 		return err
 	}

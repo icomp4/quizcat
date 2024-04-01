@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log/slog"
 	"quizcat/service"
+	"quizcat/util"
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
@@ -60,11 +61,19 @@ func (ch *CategoryHandler) AssignCategoryToQuiz(c fiber.Ctx) error {
 		QuizID     int `json:"quiz_id"`
 		CategoryID int `json:"category_id"`
 	}
+	sess, err := ch.store.Get(c)
+	if err != nil {
+		return ch.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
 	var body request
 	if err := json.Unmarshal(c.Body(), &body); err != nil {
 		return ch.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
-	if err := ch.service.AssignCategoryToQuiz(body.QuizID, body.CategoryID); err != nil {
+	userID, err := util.GetUserIDFromSession(*sess)
+	if err != nil {
+		return ch.writeErrorWithLog(c, fiber.StatusUnauthorized, err.Error())
+	}
+	if err := ch.service.AssignCategoryToQuiz(userID, body.QuizID, body.CategoryID); err != nil {
 		return ch.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
 	resp := fiber.Map{
