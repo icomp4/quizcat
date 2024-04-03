@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"quizcat/model"
 	"quizcat/service"
@@ -37,11 +38,11 @@ func (q *QuestionHandler) writeError(c fiber.Ctx, status int, message string) er
 	})
 }
 func (q *QuestionHandler) CreateQuestion(c fiber.Ctx) error {
-	quizID, err := strconv.Atoi(c.Params("quizID"))
+	quizID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
-	sess,err := q.store.Get(c)
+	sess, err := q.store.Get(c)
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
@@ -62,7 +63,7 @@ func (q *QuestionHandler) CreateQuestion(c fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(resp)
 }
 func (q *QuestionHandler) EditQuestion(c fiber.Ctx) error {
-	questionID, err := strconv.Atoi(c.Params("questionID"))
+	questionID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
@@ -87,7 +88,7 @@ func (q *QuestionHandler) EditQuestion(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
 func (q *QuestionHandler) DeleteQuestion(c fiber.Ctx) error {
-	questionID, err := strconv.Atoi(c.Params("questionID"))
+	questionID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
@@ -107,8 +108,8 @@ func (q *QuestionHandler) DeleteQuestion(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
-func(q *QuestionHandler) CreateOption(c fiber.Ctx) error {
-	questionID, err := strconv.Atoi(c.Params("questionID"))
+func (q *QuestionHandler) CreateOption(c fiber.Ctx) error {
+	questionID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
@@ -133,7 +134,7 @@ func(q *QuestionHandler) CreateOption(c fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(resp)
 }
 func (q *QuestionHandler) EditOption(c fiber.Ctx) error {
-	optionID, err := strconv.Atoi(c.Params("optionID"))
+	optionID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
@@ -152,13 +153,14 @@ func (q *QuestionHandler) EditOption(c fiber.Ctx) error {
 	if err := q.service.EditOptionText(userID, optionID, option.Text); err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
+	fmt.Println(option.Text)
 	resp := fiber.Map{
 		"message": "Option edited successfully",
 	}
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
 func (q *QuestionHandler) EditOptionCorrect(c fiber.Ctx) error {
-	optionID, err := strconv.Atoi(c.Params("optionID"))
+	optionID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
@@ -183,7 +185,7 @@ func (q *QuestionHandler) EditOptionCorrect(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
 func (q *QuestionHandler) DeleteOption(c fiber.Ctx) error {
-	optionID, err := strconv.Atoi(c.Params("optionID"))
+	optionID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}

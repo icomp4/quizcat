@@ -9,7 +9,7 @@ import (
 
 func main() {
 	db := database.New()
-	queries := []string{`DROP TABLE IF EXISTS options`, `DROP TABLE IF EXISTS questions`, `DROP TABLE IF EXISTS quizzes`, `DROP TABLE IF EXISTS users`}
+	queries := []string{`DROP TABLE IF EXISTS quiz_categories`,`DROP TABLE IF EXISTS categories`,`DROP TABLE IF EXISTS options`, `DROP TABLE IF EXISTS questions`, `DROP TABLE IF EXISTS quizzes`, `DROP TABLE IF EXISTS users`}
 
 	for _, query := range queries {
 		_, err := db.Exec(query)

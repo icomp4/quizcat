@@ -171,7 +171,7 @@ func (q *QuizService) GetRating(id int) (float32, error) {
 }
 
 func (q *QuizService) GetTopQuizzesPerPeriod(period string) ([]model.Quiz, error) {
-	if period != "daily" && period != "weekly" && period != "monthly" {
+	if period != "daily" && period != "weekly" && period != "monthly" && period != "all_time" {
 		return nil, fmt.Errorf("invalid period")
 	}
 	period += "_plays"
@@ -216,7 +216,7 @@ func (q *QuizService) GetQuizzesByCategory(category string) ([]model.Quiz, error
 
 func (q *QuizService) SearchQuizzes(search string) ([]model.Quiz, error) {
     quizzes := []model.Quiz{}
-    rows, err := q.db.Query("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays FROM quizzes WHERE LOWER(title) LIKE $1", "%" + search + "%")
+    rows, err := q.db.Query("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays FROM quizzes WHERE LOWER(title) LIKE $1" , "%" + search + "%")
     if err != nil {
         return nil, fmt.Errorf("error getting quizzes: %w", err)
     }
@@ -239,11 +239,7 @@ func (q *QuizService) DeleteQuiz(userID, id int) error {
 	if err != nil {
 		return fmt.Errorf("error starting transaction: %w", err)
 	}
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		}
-	}()
+	defer tx.Rollback()
 	var authorID int
 	err = tx.QueryRow("SELECT author_id FROM quizzes WHERE id = $1", id).Scan(&authorID)
 	if err != nil {

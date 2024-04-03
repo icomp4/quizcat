@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"quizcat/service"
 	"quizcat/util"
+	"strconv"
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
@@ -57,23 +58,27 @@ func (ch *CategoryHandler) GetCategories(c fiber.Ctx) error {
 }
 
 func (ch *CategoryHandler) AssignCategoryToQuiz(c fiber.Ctx) error {
-	type request struct {
-		QuizID     int `json:"quiz_id"`
-		CategoryID int `json:"category_id"`
+	category := c.Params("id")
+	quiz := c.Params("quizID")
+	categoryID, err := strconv.Atoi(category)
+	if err != nil{
+		return ch.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
+	quizID, err := strconv.Atoi(quiz)
+	if err != nil{
+		return ch.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
+	}
+
 	sess, err := ch.store.Get(c)
 	if err != nil {
 		return ch.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
-	var body request
-	if err := json.Unmarshal(c.Body(), &body); err != nil {
-		return ch.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
-	}
+
 	userID, err := util.GetUserIDFromSession(*sess)
 	if err != nil {
 		return ch.writeErrorWithLog(c, fiber.StatusUnauthorized, err.Error())
 	}
-	if err := ch.service.AssignCategoryToQuiz(userID, body.QuizID, body.CategoryID); err != nil {
+	if err := ch.service.AssignCategoryToQuiz(userID, quizID, categoryID); err != nil {
 		return ch.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
 	resp := fiber.Map{

@@ -28,21 +28,21 @@ func main() {
 		)`,
 		`CREATE TABLE IF NOT EXISTS questions (
 			id SERIAL PRIMARY KEY,
-			quiz_id INTEGER REFERENCES quizzes(id),
+			quiz_id INTEGER REFERENCES quizzes(id) ON DELETE CASCADE,
 			text TEXT NOT NULL
-		)`,
+		);`,
 		`CREATE TABLE IF NOT EXISTS options (
 			id SERIAL PRIMARY KEY,
-			question_id INTEGER REFERENCES questions(id),
+			question_id INTEGER REFERENCES questions(id) ON DELETE CASCADE,
 			text TEXT NOT NULL,
 			is_correct BOOLEAN NOT NULL
-		)`,
-		`CREATE TABLE categories (
+		);`,
+		`CREATE TABLE IF NOT EXISTS categories (
 			id SERIAL PRIMARY KEY,
 			name VARCHAR(255)
 		);`,
 		`
-		CREATE TABLE quiz_categories (
+		CREATE TABLE IF NOT EXISTS quiz_categories (
 			quiz_id INTEGER,
 			category_id INTEGER,
 			PRIMARY KEY (quiz_id, category_id),
