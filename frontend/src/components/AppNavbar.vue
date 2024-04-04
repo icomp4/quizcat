@@ -19,6 +19,8 @@
 </template>
 
 <style>
+
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -29,6 +31,7 @@
 }
 
 .quizHeader {
+  color : var(--text-color-light);
   margin-left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
@@ -51,14 +54,11 @@
   cursor: pointer;
 }
 
+
 </style>
 
 <script>
 export default {
-  data() {
-    return {
-    isOpen: false
-    }
-  }
-}
+  name: "AppNavbar",
+};
 </script>
