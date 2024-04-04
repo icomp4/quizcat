@@ -11,6 +11,7 @@ import (
 	"quizcat/util"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/session"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -30,6 +31,7 @@ func main() {
 	questionHandler := handler.NewQuestionHandler(*questionService, store, *logger)
 
 	app := server.New(fiber.New(), quizHandler, userHandler, categoryHandler, questionHandler, store)
+	app.App.Use(cors.New())
 	server.SetupRoutes(app)
 	log.Fatal(app.App.Listen(":" + os.Getenv("PORT")))
 	util.StartPlayCountResetScheduler(db)

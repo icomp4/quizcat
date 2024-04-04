@@ -1,22 +1,25 @@
 package model
 
+import "time"
+
 type Quiz struct {
-	ID              uint    `db:"id" json:"id"`
-	Title           string  `db:"title" json:"title"`
-	AuthorID        uint    `db:"author_id" json:"author_id"`
-	Rating          float32 `db:"rating" json:"rating"`
-	AmountOfRatings uint    `db:"amount_of_ratings" json:"amount_of_ratings"`
-	DailyPlays      uint    `db:"daily_plays" json:"daily_plays"`
-	WeeklyPlays     uint    `db:"weekly_plays" json:"weekly_plays"`
-	MonthlyPlays    uint    `db:"monthly_plays" json:"monthly_plays"`
-	AllTimePlays    uint    `db:"all_time_plays" json:"all_time_plays"`
+	ID              uint       `db:"id" json:"id"`
+	Title           string     `db:"title" json:"title"`
+	AuthorID        uint       `db:"author_id" json:"author_id"`
+	Rating          float32    `db:"rating" json:"rating"`
+	AmountOfRatings uint       `db:"amount_of_ratings" json:"amount_of_ratings"`
+	DailyPlays      uint       `db:"daily_plays" json:"daily_plays"`
+	WeeklyPlays     uint       `db:"weekly_plays" json:"weekly_plays"`
+	MonthlyPlays    uint       `db:"monthly_plays" json:"monthly_plays"`
+	AllTimePlays    uint       `db:"all_time_plays" json:"all_time_plays"`
+	CreatedAt       time.Time  `db:"created_at" json:"created_at"`
 	Categories      []Category `json:"categories"`
 	Questions       []Question
 }
 
 type Category struct {
-    ID       uint   `db:"id" json:"id"`
-    Name     string `db:"name" json:"name"`
+	ID   uint   `db:"id" json:"id"`
+	Name string `db:"name" json:"name"`
 }
 
 type Question struct {

@@ -24,7 +24,8 @@ func main() {
 			daily_plays INTEGER NOT NULL,
 			weekly_plays INTEGER NOT NULL,
 			monthly_plays INTEGER NOT NULL,
-			all_time_plays INTEGER NOT NULL
+			all_time_plays INTEGER NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)`,
 		`CREATE TABLE IF NOT EXISTS questions (
 			id SERIAL PRIMARY KEY,

@@ -28,8 +28,12 @@
 
 <style>
 .filterBox {
+    position: absolute;
+    margin-left: 10px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 6%;
-    margin-top: 14%;
     padding: 10px;
     border: 1px solid rgb(36, 36, 36);
     border-radius: 10px;
@@ -50,7 +54,6 @@ legend {
 .item :hover {
     color: rgb(43, 117, 179);
     cursor: pointer;
-    font-style: italic;
 }
 .hidden-radio {
     position: absolute;
@@ -58,7 +61,6 @@ legend {
     pointer-events: none;
 }
 </style>
-
 <script>
 export default {
   data() {

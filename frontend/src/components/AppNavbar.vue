@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar">
-    <h1 class="quizHeader">QuizCat</h1>
+    <router-link to="/" class="quizHeader">^ QuizCat  ^</router-link>
     <ul class="nav-links">
       <li>
-        <router-link to="/">Explore</router-link>
+        <router-link to="/test">Explore</router-link>
       </li>
       <li>
         <router-link to="/quizzes">Create</router-link>
@@ -31,10 +31,15 @@
 }
 
 .quizHeader {
+  font-size: 1.5rem;
   color : var(--text-color-light);
   margin-left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
+  text-decoration: none;
+}
+.quizHeader:hover {
+  cursor: pointer;
 }
 
 .nav-links {
@@ -43,16 +48,22 @@
   width: 20%;
   margin-right: 5%;
 }
+.nav-links li  {
+  list-style: none;
+}
 
-.nav-links li {
+.nav-links li a {
   list-style: none;
   padding: 10px;
   color: rgb(36, 36, 36);
+  text-decoration: none;
+  font-size: medium;
 }
-.nav-links li:hover {
+.nav-links li a:hover {
   color: rgb(43, 117, 179);
   cursor: pointer;
 }
+
 
 
 </style>
