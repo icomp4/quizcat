@@ -71,7 +71,7 @@ func (u *UserHandler) Login(c fiber.Ctx) error {
 	}
 	id, err := u.service.Login(l.Username, l.Password)
 	if err != nil {
-		u.writeErrorWithLog(c, fiber.StatusUnauthorized, err.Error())
+		return u.writeErrorWithLog(c, fiber.StatusUnauthorized, err.Error())
 	}
 	sess.Set("userID", id)
 	sess.Set("isAuth", true)

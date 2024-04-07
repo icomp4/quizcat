@@ -1,19 +1,18 @@
 <template>
-    <div class="quizContainer">
-      <div class="quizGrid">
-        <div class="quizCard" v-for="quiz in quizzes" :key="quiz.id">
-          <h4 class="quizTitle">{{ quiz.title }}</h4>
-          <div class="quizTags">
-            <span class="tag" v-for="category in quiz.categories" :key="category.id">{{ category.name }}</span>
-          </div>
-          <div class="quizInfo">
-            <p class="quizDate">{{ formatDate(quiz.created_at) }}</p> 
-            <p class="quizPlays">{{ quiz.all_time_plays }} plays</p>
-          </div>
+  <div class="quizContainer">
+    <div class="quizGrid">
+      <a class="quizCard" v-for="quiz in quizzes" :key="quiz.id" :href="`/quiz/${quiz.id}`">
+        <h4 class="quizTitle">{{ quiz.title }}</h4>
+        <div class="quizTags">
         </div>
-      </div>
+        <div class="quizInfo">
+          <p class="quizDate">{{ formatDate(quiz.created_at) }}</p> 
+          <p class="quizPlays">{{ quiz.all_time_plays }} plays</p>
+        </div>
+      </a>
     </div>
-  </template>
+  </div>
+</template>
 <script>
 export default {
   data() {
@@ -51,7 +50,6 @@ export default {
     width: 100%;
 }
 .quizCard {
-    color: white;
     background: linear-gradient(90deg, rgba(43,155,179,1) 0%, rgba(43,117,179,1) 100%);
     display: flex;
     flex-direction: column;
@@ -62,6 +60,9 @@ export default {
     border-radius: 10px;
     height: 150px;
     transition: 0.3s all ease-in-out;
+    text-decoration: none; 
+    color: inherit; 
+    max-width: 150px;
 }
 .quizTitle, .quizDescription {
     margin: 0;

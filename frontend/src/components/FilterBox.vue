@@ -61,6 +61,7 @@ legend {
     pointer-events: none;
 }
 </style>
+
 <script>
 export default {
   data() {

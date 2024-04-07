@@ -18,7 +18,7 @@ type QuizHandler struct {
 	logger  slog.Logger
 }
 
-func NewQuizHandler(service service.QuizService,session *session.Store, logger slog.Logger) *QuizHandler {
+func NewQuizHandler(service service.QuizService, session *session.Store, logger slog.Logger) *QuizHandler {
 	return &QuizHandler{
 		service: service,
 		store:   session,

@@ -16,6 +16,11 @@ func NewQuizService(db *sql.DB) *QuizService {
 }
 
 func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
+	quiz.AllTimePlays = 0
+	quiz.DailyPlays = 0
+	quiz.WeeklyPlays = 0
+	quiz.MonthlyPlays = 0
+	quiz.Rating = 0
 	tx, err := q.db.Begin()
 	if err != nil {
 		return fmt.Errorf("error starting transaction: %w", err)
@@ -85,6 +90,7 @@ func (q *QuizService) GetQuizByID(id int) (*model.Quiz, error) {
 
 	for rows.Next() {
 		question := model.Question{}
+		question.QuizID = uint(id)
 		err := rows.Scan(&question.ID, &question.Text)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning question: %w", err)
@@ -112,6 +118,7 @@ func (q *QuizService) getOptionsByQuestionID(id uint) ([]model.Option, error) {
 	var options []model.Option
 	for rows.Next() {
 		option := model.Option{}
+		option.QuestionID = id
 		err := rows.Scan(&option.ID, &option.Text, &option.IsCorrect)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning option: %w", err)
