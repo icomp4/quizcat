@@ -3,13 +3,16 @@
     <router-link to="/" class="quizHeader">^ QuizCat  ^</router-link>
     <ul class="nav-links">
       <li>
-        <router-link to="/test">Explore</router-link>
+        <router-link to="/home">Home</router-link>
       </li>
       <li>
-        <router-link to="/quizzes">Create</router-link>
+        <router-link to="/trending">Trending</router-link>
       </li>
       <li>
-        <router-link to="/create">Sign up</router-link>
+        <router-link to="/create">Create</router-link>
+      </li>
+      <li>
+        <router-link to="/signup">Sign Up</router-link>
       </li>
       <li>
         <router-link to="/login">Login</router-link>
@@ -25,14 +28,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: rgb(12, 12, 12);
   padding: 10px 0;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
 }
 
 .quizHeader {
   font-size: 1.5rem;
-  color : var(--text-color-light);
+  color : rgb(194, 194, 194);
   margin-left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
@@ -55,17 +57,14 @@
 .nav-links li a {
   list-style: none;
   padding: 10px;
-  color: rgb(36, 36, 36);
+  color: rgb(194, 194, 194);
   text-decoration: none;
   font-size: medium;
 }
 .nav-links li a:hover {
-  color: rgb(43, 117, 179);
+  color: #ff994f;
   cursor: pointer;
 }
-
-
-
 </style>
 
 <script>

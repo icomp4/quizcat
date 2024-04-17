@@ -1,22 +1,22 @@
 <template>
   <AppNavbar />
-  <div class="main-container">
-    <FilterBox />
-    <QuizGrid />
-  </div>
+  <HeroSection />
+  <FaqSection />
+  <MainFooter />
 </template>
-
 <script>
 import AppNavbar from './components/AppNavbar.vue'
-import FilterBox from './components/FilterBox.vue'
-import QuizGrid from './components/QuizGrid.vue'
+import HeroSection from './components/HeroSection.vue'
+import FaqSection from './components/FaqSection.vue'
+import MainFooter from './components/MainFooter.vue'
 
 export default {
   name: 'App',
   components: {
     AppNavbar,
-    FilterBox,
-    QuizGrid
+    HeroSection,
+    FaqSection,
+    MainFooter
   }
 }
 </script>
