@@ -4,10 +4,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Main from './Main.vue'
 import App from './App.vue'
 import './app.css'
+import TrendingPage from './TrendingPage.vue'
 
 
 const routes = [
   { path: '/', component: Main },
+  { path: "/trending", component: TrendingPage }
 ]
 
 const router = createRouter({

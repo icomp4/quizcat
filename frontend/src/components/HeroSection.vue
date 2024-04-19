@@ -4,7 +4,9 @@
         <div class="text-container">
             <h1>Welcome to QuizCat!</h1>
             <p class="caption">Purr-fect Trivia</p>
-            <button class="discover-btn">Discover Quizzes</button>
+            <a href="/trending">
+                <button class="discover-btn">Discover Quizzes</button>
+            </a>
         </div>
     </div>
 </template>
