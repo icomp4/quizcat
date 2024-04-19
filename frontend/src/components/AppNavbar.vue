@@ -21,9 +21,7 @@
   </nav>
 </template>
 
-<style>
-
-
+<style scoped>
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -31,7 +29,6 @@
   background-color: rgb(12, 12, 12);
   padding: 10px 0;
 }
-
 .quizHeader {
   font-size: 1.5rem;
   color : rgb(194, 194, 194);

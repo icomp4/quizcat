@@ -184,7 +184,7 @@ func (q *QuizService) GetTopQuizzesPerPeriod(period string) ([]model.Quiz, error
 	period += "_plays"
 	quizzes := []model.Quiz{}
 
-	query := fmt.Sprintf("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes ORDER BY %s DESC LIMIT 10", period)
+	query := fmt.Sprintf("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes ORDER BY %s DESC LIMIT 100", period)
 	rows, err := q.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error getting top quizzes: %w", err)

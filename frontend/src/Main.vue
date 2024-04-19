@@ -1,9 +1,14 @@
 <template>
-  <AppNavbar />
-  <HeroSection />
-  <FaqSection />
-  <MainFooter />
+  <div class="main-container">
+    <AppNavbar />
+    <div class="content">
+      <HeroSection />
+      <FaqSection />
+    </div>
+    <MainFooter />
+  </div>
 </template>
+
 <script>
 import AppNavbar from './components/AppNavbar.vue'
 import HeroSection from './components/HeroSection.vue'
@@ -22,9 +27,12 @@ export default {
 </script>
 
 <style>
-.main-container {
-  display: flex;
-  justify-content: center;
-  padding: 0 10%;
-}
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .content {
+    flex: 1;
+  }
 </style>

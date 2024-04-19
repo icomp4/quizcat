@@ -10,7 +10,7 @@
         </div>
     </div>
 </template>
-<style>
+<style scoped>
 .hero-container {
     display: flex;
     height: 50vh;

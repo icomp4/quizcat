@@ -15,7 +15,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 .FaqSection-container {
     background-color: rgb(12, 12, 12);
     color: #ffffff;
