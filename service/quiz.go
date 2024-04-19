@@ -21,6 +21,9 @@ func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
 	quiz.WeeklyPlays = 0
 	quiz.MonthlyPlays = 0
 	quiz.Rating = 0
+	if quiz.Picture == "" {
+		quiz.Picture = "https://www.jootoor.com/wp-content/uploads/2023/09/Orange-Gradient.jpg"
+	}
 	tx, err := q.db.Begin()
 	if err != nil {
 		return fmt.Errorf("error starting transaction: %w", err)
@@ -31,7 +34,7 @@ func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
 		}
 	}()
 	var quizID uint
-	err = tx.QueryRow("INSERT INTO quizzes (title, author_id, rating, amount_of_ratings, daily_plays, weekly_plays, monthly_plays, all_time_plays) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id", quiz.Title, quiz.AuthorID, quiz.Rating, 0, 0, 0, 0, 0).Scan(&quizID)
+	err = tx.QueryRow("INSERT INTO quizzes (title, author_id, picture, rating, amount_of_ratings, daily_plays, weekly_plays, monthly_plays, all_time_plays) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id", quiz.Title, quiz.AuthorID, quiz.Picture,0 , 0, 0, 0, 0, 0).Scan(&quizID)
 	if err != nil {
 		return fmt.Errorf("error creating quiz: %w", err)
 	}
@@ -70,8 +73,8 @@ func (q *QuizService) CreateQuiz(quiz *model.Quiz) error {
 }
 func (q *QuizService) GetQuizByID(id int) (*model.Quiz, error) {
 	quiz := &model.Quiz{}
-	err := q.db.QueryRow("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes WHERE id = $1", id).
-		Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
+	err := q.db.QueryRow("SELECT id, title, author_id, picture, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes WHERE id = $1", id).
+		Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Picture, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("error getting quiz: %w", err)
 	}
@@ -184,7 +187,7 @@ func (q *QuizService) GetTopQuizzesPerPeriod(period string) ([]model.Quiz, error
 	period += "_plays"
 	quizzes := []model.Quiz{}
 
-	query := fmt.Sprintf("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes ORDER BY %s DESC LIMIT 100", period)
+	query := fmt.Sprintf("SELECT id, title, author_id, picture, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes ORDER BY %s DESC LIMIT 100", period)
 	rows, err := q.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error getting top quizzes: %w", err)
@@ -194,7 +197,7 @@ func (q *QuizService) GetTopQuizzesPerPeriod(period string) ([]model.Quiz, error
 	for rows.Next() {
 		
 		quiz := model.Quiz{}
-		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
+		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Picture, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning quiz: %w", err)
 		}
@@ -211,13 +214,13 @@ func (q *QuizService) GetTopQuizzesPerPeriod(period string) ([]model.Quiz, error
 
 func (q *QuizService) GetQuizzesByCategory(category string) ([]model.Quiz, error) {
 	quizzes := []model.Quiz{}
-	rows, err := q.db.Query("SELECT q.id, q.title, q.author_id, q.rating, q.daily_plays, q.weekly_plays, q.monthly_plays, q.all_time_plays, q.created_at FROM quizzes q JOIN quiz_categories qc ON q.id = qc.quiz_id JOIN categories c ON c.id = qc.category_id WHERE c.name = $1", category)
+	rows, err := q.db.Query("SELECT q.id, q.title, q.author_id, q.picture, q.rating, q.daily_plays, q.weekly_plays, q.monthly_plays, q.all_time_plays, q.created_at FROM quizzes q JOIN quiz_categories qc ON q.id = qc.quiz_id JOIN categories c ON c.id = qc.category_id WHERE c.name = $1", category)
 	if err != nil {
 		return nil, fmt.Errorf("error getting quizzes: %w", err)
 	}
 	for rows.Next() {
 		quiz := model.Quiz{}
-		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
+		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Picture, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning quiz: %w", err)
 		}
@@ -229,7 +232,7 @@ func (q *QuizService) GetQuizzesByCategory(category string) ([]model.Quiz, error
 
 func (q *QuizService) SearchQuizzes(search string) ([]model.Quiz, error) {
     quizzes := []model.Quiz{}
-    rows, err := q.db.Query("SELECT id, title, author_id, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes WHERE LOWER(title) LIKE $1" , "%" + search + "%")
+    rows, err := q.db.Query("SELECT id, title, author_id, picture, rating, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes WHERE LOWER(title) LIKE $1" , "%" + search + "%")
     if err != nil {
         return nil, fmt.Errorf("error getting quizzes: %w", err)
     }
@@ -237,7 +240,7 @@ func (q *QuizService) SearchQuizzes(search string) ([]model.Quiz, error) {
 
     for rows.Next() {
         quiz := model.Quiz{}
-        err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
+        err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Picture, &quiz.Rating, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
         if err != nil {
             return nil, fmt.Errorf("error scanning quiz: %w", err)
         }

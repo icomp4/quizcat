@@ -66,8 +66,7 @@ export default {
     padding: 8px;
     margin-bottom: 20px;
     box-sizing: border-box;
-    border-radius: 25px;
-    border: 1px solid rgb(214, 214, 214);
+    border: 3px solid rgb(214, 214, 214);
 }
 
 .trending-filters {
@@ -82,7 +81,7 @@ export default {
 }
 .filter-option:hover{
     cursor: pointer;
-    background-color: rgb(214, 214, 214);
+    background-color: #ffd6af;
 }
 
 .trending-filters label {

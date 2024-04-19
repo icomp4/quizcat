@@ -3,7 +3,7 @@
     <router-link to="/" class="quizHeader">^ QuizCat  ^</router-link>
     <ul class="nav-links">
       <li>
-        <router-link to="/home">Home</router-link>
+        <router-link to="/">Home</router-link>
       </li>
       <li>
         <router-link to="/trending">Trending</router-link>

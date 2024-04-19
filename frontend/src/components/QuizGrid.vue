@@ -5,7 +5,7 @@
         <p>Leap into our most popular quizzes and see what's capturing everyone's curiosity!</p>
       </div>
       <div class="quizGrid">
-        <a class="quizCard" v-for="quiz in quizzes" :key="quiz.id" :href="`/quiz/${quiz.id}`">
+        <a class="quizCard" v-for="quiz in quizzes" :key="quiz.id" :href="`/quiz/${quiz.id}`" :style="{ backgroundImage: `url(${quiz.picture})` }">
           <h4 class="quizTitle">{{ quiz.title }}</h4>
           <div class="quizTags">
           </div>
@@ -74,8 +74,7 @@ export default {
 }
 </script>
 
-
-  <style>
+<style>
   .pageHeading {
       text-align: center;
       margin-top: -40px;
@@ -106,27 +105,49 @@ export default {
       width: 100%;
   }
   .quizCard {
+    position: relative;
     color: white;
-      background: radial-gradient(circle, rgba(255,153,79,1) 0%, rgba(255,124,30,1) 100%);
       display: flex;
       flex-direction: column;
       justify-content: space-between; 
       padding: 20px;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      box-shadow: rgba(0, 0, 0, 0.185) 0px 3px 8px;
       border-radius: 10px;
       height: 150px;
       transition: 0.3s all ease-in-out;
       max-width: 150px;
       text-decoration: none;
+      background-size: cover;
+      
   }
+  .quizCard::before {
+    border-radius: 10px;
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.5); 
+      z-index: 1;
+    } 
+
+  .quizTitle, .quizTags, .quizInfo {
+      position: relative;
+      z-index: 2;
+    }
   .quizTitle, .quizDescription {
       margin: 0;
+    }
+    .quizTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .quizTitle {
-      font-size: 1.5rem;
-      font-weight: bold;
-  }
-  
   .quizTags {
       display: flex;
       justify-content: center; 
@@ -164,5 +185,4 @@ export default {
       margin: 0; 
       margin-top: 4px; 
   }
-  
-  </style>
+</style>

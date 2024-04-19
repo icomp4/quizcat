@@ -60,7 +60,7 @@ func (q *CategoryService) GetQuizzesByCategory(category string) ([]model.Quiz, e
 	var quizzes []model.Quiz
 
 	query := `
-        SELECT q.id, q.title, q.author_id, q.rating, q.amount_of_ratings, q.daily_plays, 
+        SELECT q.id, q.title, q.author_id, q.picture, q.rating, q.amount_of_ratings, q.daily_plays, 
                q.weekly_plays, q.monthly_plays, q.all_time_plays
         FROM quizzes q
         JOIN quiz_categories qc ON q.id = qc.quiz_id
@@ -76,7 +76,7 @@ func (q *CategoryService) GetQuizzesByCategory(category string) ([]model.Quiz, e
 
 	for rows.Next() {
 		var quiz model.Quiz
-		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Rating, &quiz.AmountOfRatings,
+		err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Picture, &quiz.Rating, &quiz.AmountOfRatings,
 			&quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays)
 		if err != nil {
 			return nil, err

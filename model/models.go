@@ -6,6 +6,7 @@ type Quiz struct {
 	ID              uint       `db:"id" json:"id"`
 	Title           string     `db:"title" json:"title"`
 	AuthorID        uint       `db:"author_id" json:"author_id"`
+	Picture         string     `db:"picture" json:"picture"`
 	Rating          float32    `db:"rating" json:"rating"`
 	AmountOfRatings uint       `db:"amount_of_ratings" json:"amount_of_ratings"`
 	DailyPlays      uint       `db:"daily_plays" json:"daily_plays"`
