@@ -14,7 +14,7 @@ cd migrate/up || exit
 go run main.go
 
 # Navigating back to the root directory
-cd ../../..
+cd ../../
 
 # Running the main Go program from the root directory
 go run main.go
