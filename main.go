@@ -44,10 +44,10 @@ func main() {
 		AllowHeaders:     "Content-Type, Authorization",
 	}))
 	app.App.Static("/", "./frontend/dist")
+	server.SetupRoutes(app)
 	app.App.Get("/*", func(c fiber.Ctx) error {
         return c.SendFile("./frontend/dist/index.html")
     })
-	server.SetupRoutes(app)
 	port := os.Getenv("PORT")
 	portStr := fmt.Sprintf("0.0.0.0:%s", port)
 	log.Fatal(app.App.Listen(portStr))
