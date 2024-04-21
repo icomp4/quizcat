@@ -21,18 +21,21 @@ func SetupRoutes(s *Server) {
 		},
 	})
 	// quiz handlers
-	s.App.Post("/api/quiz", s.QuizHandler.CreateQuiz)                           // create quiz
-	s.App.Get("/api/quiz/:id", s.QuizHandler.GetQuizByID)                       // get quiz by id
-	s.App.Put("/api/quiz/:id/complete", s.QuizHandler.IncrementPlays)           // increment plays
-	s.App.Put("/api/quiz/:id/rate", s.QuizHandler.RateQuiz, authMiddleware, limter)     // rate quiz
-	s.App.Get("/api/quiz/:id/rating", s.QuizHandler.GetRating)                  // get rating
-	s.App.Get("/api/quizzes/top/:period", s.QuizHandler.GetTopQuizzesPerPeriod) // get top quizzes per period
-	s.App.Get("/api/quizzes/search", s.QuizHandler.SearchQuizzes)               // search quizzes
-	s.App.Delete("/api/quiz/:id", s.QuizHandler.DeleteQuiz, authMiddleware)     // delete quiz
+	s.App.Post("/api/quiz", s.QuizHandler.CreateQuiz)                               // create quiz
+	s.App.Get("/api/quiz/:id", s.QuizHandler.GetQuizByID)                           // get quiz by id
+	s.App.Put("/api/quiz/:id/complete", s.QuizHandler.IncrementPlays)               // increment plays
+	s.App.Put("/api/quiz/:id/rate", s.QuizHandler.RateQuiz, authMiddleware, limter) // rate quiz
+	s.App.Get("/api/quiz/:id/rating", s.QuizHandler.GetRating)                      // get rating
+	s.App.Get("/api/quizzes/top/:period", s.QuizHandler.GetTopQuizzesPerPeriod)     // get top quizzes per period
+	s.App.Get("/api/quizzes/search", s.QuizHandler.SearchQuizzes)                   // search quizzes
+	s.App.Delete("/api/quiz/:id", s.QuizHandler.DeleteQuiz, authMiddleware)         // delete quiz
+	s.App.Get("/api/user/quizzes", s.QuizHandler.GetQuizzesByUser)                            // get quizzes
 
 	// user handlers
 	s.App.Post("/api/signup", s.UserHandler.CreateUser) // create user
 	s.App.Post("/api/login", s.UserHandler.Login)       // login
+	s.App.Get("/api/logout", s.UserHandler.Logout)      // logout
+	s.App.Get("/api/user", s.UserHandler.GetUser)       // get user
 	s.App.Get("/api/isAuth", s.UserHandler.IsAuth)      // check if user is authenticated
 
 	// category handlers

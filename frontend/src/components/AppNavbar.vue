@@ -12,6 +12,9 @@
         <router-link to="/create">Create</router-link>
       </li>
       <li>
+        <router-link to="/account">Account</router-link>
+      </li>
+      <li>
         <router-link to="/signup">Sign Up</router-link>
       </li>
       <li>
@@ -27,7 +30,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: rgb(12, 12, 12);
-  padding: 10px 0;
+  padding: 8px 0;
 }
 .quizHeader {
   font-size: 1.5rem;
@@ -45,7 +48,7 @@
   display: flex;
   justify-content: space-between;
   width: 20%;
-  margin-right: 5%;
+  margin-right: 2%;
 }
 .nav-links li  {
   list-style: none;
@@ -53,7 +56,7 @@
 
 .nav-links li a {
   list-style: none;
-  padding: 10px;
+  padding: 5px;
   color: rgb(194, 194, 194);
   text-decoration: none;
   font-size: medium;

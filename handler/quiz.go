@@ -171,3 +171,19 @@ func (q *QuizHandler) DeleteQuiz(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
+
+func (q *QuizHandler) GetQuizzesByUser(c fiber.Ctx) error {
+	sess, err := q.store.Get(c)
+	if err != nil {
+		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	userid, err := util.GetUserIDFromSession(*sess)
+	if err != nil {
+		return q.writeError(c, fiber.StatusUnauthorized, "Unauthorized")
+	}
+	quizzes, err := q.service.GetQuizzesByUser(userid)
+	if err != nil {
+		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(quizzes)
+}

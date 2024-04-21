@@ -273,3 +273,54 @@ func (q *QuizService) DeleteQuiz(userID, id int) error {
 	}
 	return nil
 }
+func (q *QuizService) GetQuizzesByUser(userID int) ([]model.Quiz, error) {
+    quizzes := []model.Quiz{}
+    rows, err := q.db.Query("SELECT id, title, author_id, picture, rating, amount_of_ratings, daily_plays, weekly_plays, monthly_plays, all_time_plays, created_at FROM quizzes WHERE author_id = $1", userID)
+    if err != nil {
+        return nil, fmt.Errorf("error getting quizzes: %w", err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        quiz := model.Quiz{}
+        err := rows.Scan(&quiz.ID, &quiz.Title, &quiz.AuthorID, &quiz.Picture, &quiz.Rating, &quiz.AmountOfRatings, &quiz.DailyPlays, &quiz.WeeklyPlays, &quiz.MonthlyPlays, &quiz.AllTimePlays, &quiz.CreatedAt)
+        if err != nil {
+            return nil, fmt.Errorf("error scanning quiz: %w", err)
+        }
+
+        questionRows, err := q.db.Query("SELECT id, text FROM questions WHERE quiz_id = $1", quiz.ID)
+        if err != nil {
+            return nil, fmt.Errorf("error getting questions: %w", err)
+        }
+        defer questionRows.Close()
+
+        for questionRows.Next() {
+            question := model.Question{}
+            err := questionRows.Scan(&question.ID, &question.Text)
+            if err != nil {
+                return nil, fmt.Errorf("error scanning question: %w", err)
+            }
+
+            optionRows, err := q.db.Query("SELECT id, text, is_correct FROM options WHERE question_id = $1", question.ID)
+            if err != nil {
+                return nil, fmt.Errorf("error getting options: %w", err)
+            }
+            defer optionRows.Close()
+
+            for optionRows.Next() {
+                option := model.Option{}
+                err := optionRows.Scan(&option.ID, &option.Text, &option.IsCorrect)
+                if err != nil {
+                    return nil, fmt.Errorf("error scanning option: %w", err)
+                }
+                question.Options = append(question.Options, option)
+            }
+
+            quiz.Questions = append(quiz.Questions, question)
+        }
+
+        quizzes = append(quizzes, quiz)
+    }
+
+    return quizzes, nil
+}

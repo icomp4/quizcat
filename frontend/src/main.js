@@ -9,6 +9,7 @@ import QuizPlayPage from './QuizPlayPage.vue'
 import SignupPage from './SignupPage.vue'
 import LoginPage from './LoginPage.vue'
 import CreateQuizPage from './CreateQuizPage.vue'
+import AccountPage from './AccountPage.vue'
 
 const routes = [
   { path: '/', component: Main },
@@ -16,7 +17,8 @@ const routes = [
   { path: "/quiz/:id", component: QuizPlayPage, props: true},
   { path: "/signup", component: SignupPage },
   { path: "/login", component: LoginPage},
-  { path: "/create", component: CreateQuizPage}
+  { path: "/create", component: CreateQuizPage},
+  { path: "/account", component: AccountPage}
 ]
 
 const router = createRouter({

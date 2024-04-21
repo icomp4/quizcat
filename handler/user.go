@@ -84,7 +84,31 @@ func (u *UserHandler) Login(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
-
+func (u *UserHandler) Logout(c fiber.Ctx) error {
+	sess, err := u.store.Get(c)
+	if err != nil {
+		return u.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	sess.Destroy()
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Logout successful!",
+	})
+}
+func(u *UserHandler) GetUser(c fiber.Ctx) error {
+	sess, err := u.store.Get(c)
+	if err != nil {
+		return u.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	userID, err := util.GetUserIDFromSession(*sess)
+	if err != nil {
+		return u.writeError(c, fiber.StatusUnauthorized, err.Error())
+	}
+	users, err := u.service.GetUserByID(userID)
+	if err != nil {
+		return u.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	return c.Status(fiber.StatusOK).JSON(users)
+}
 func (u *UserHandler) IsAuth(c fiber.Ctx) error {
 	sess, err := u.store.Get(c)
 	if err != nil {
