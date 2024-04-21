@@ -15,7 +15,6 @@
         <p>Quiz Finished! You scored {{ correctAnswers }}/{{ quiz.Questions.length }}</p>
         <button @click="resetQuiz" class="restartBtn">Restart Quiz</button>
       </div>
-      <p>rate this quiz</p>
       <div class="rate">
         <input type="radio" id="star5" name="rate" value="5" v-model="rating" />
         <label for="star5" title="text">5 stars</label>
