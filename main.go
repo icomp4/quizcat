@@ -38,12 +38,12 @@ func main() {
 
 	app := server.New(fiber.New(), quizHandler, userHandler, categoryHandler, questionHandler, store)
 	app.App.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:3000",
+		AllowOrigins:     "https://quizcat-production.up.railway.app",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders:     "Content-Type, Authorization",
 	}))
-
+	app.App.Static("/", "./frontend/dist")
 	server.SetupRoutes(app)
 	port := os.Getenv("PORT")
 	portStr := fmt.Sprintf("0.0.0.0:%s", port)
