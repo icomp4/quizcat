@@ -21,7 +21,7 @@
     flex: 1;
     background-image: url('../assets/quizcat.png');
     background-repeat: no-repeat;
-    margin-top: -50px;
+    margin-top: -20px;
 }
 
 .text-container {

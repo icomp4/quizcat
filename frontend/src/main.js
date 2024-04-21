@@ -6,12 +6,16 @@ import App from './App.vue'
 import './app.css'
 import TrendingPage from './TrendingPage.vue'
 import QuizPlayPage from './QuizPlayPage.vue'
+import SignupPage from './SignupPage.vue'
+import LoginPage from './LoginPage.vue'
 
 
 const routes = [
   { path: '/', component: Main },
   { path: "/trending", component: TrendingPage },
-  { path: "/quiz/:id", component: QuizPlayPage, props: true}
+  { path: "/quiz/:id", component: QuizPlayPage, props: true},
+  { path: "/signup", component: SignupPage },
+  { path: "/login", component: LoginPage}
 ]
 
 const router = createRouter({

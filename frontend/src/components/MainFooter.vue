@@ -22,6 +22,7 @@
                 <ul>
                     <li><a href="https://github.com/icomp4">Github</a></li>
                     <li><a href="https://www.linkedin.com/in/isaiahcompere44/">Linkedin</a></li>
+                    <li><a href="https://ko-fi.com/icomp4">Buy Me A Coffee</a></li>
                 </ul>
             </div>
         </div>

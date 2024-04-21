@@ -57,7 +57,7 @@ export default {
     border-radius: 15px;
     background-color: white;
     z-index: 1000;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .search-area input[type="text"] {
@@ -66,7 +66,8 @@ export default {
     padding: 8px;
     margin-bottom: 20px;
     box-sizing: border-box;
-    border: 3px solid rgb(214, 214, 214);
+    border: 2px solid rgb(158, 158, 158);
+    border-radius: 25px;
 }
 
 .trending-filters {
@@ -78,10 +79,11 @@ export default {
     display: flex;
     align-items: center; 
     margin: 5px 0;
+    position: relative; 
 }
-.filter-option:hover{
+.filter-option:hover {
     cursor: pointer;
-    background-color: #ffd6af;
+    background-color: #d4d4d4;
 }
 
 .trending-filters label {
@@ -89,4 +91,35 @@ export default {
     padding: 10px;
 }
 
+.filter-option input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    left: 10px; 
+    width: 20px; 
+    height: 100%;
+    z-index: 1; 
+}
+
+.filter-option label {
+    padding-left: 30px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.filter-option label::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: background 0.3s;
+}
+.filter-option input[type="radio"]:checked + label::before {
+    background: #ff994f;
+}
 </style>
