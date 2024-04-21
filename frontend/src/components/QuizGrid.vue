@@ -1,23 +1,20 @@
 <template>
-    <div class="quizContainer">
-      <div class="pageHeading">
-        <h1>Explore What's <span class="hot">Hot!</span></h1>
-        <p>Leap into our most popular quizzes and see what's capturing everyone's curiosity!</p>
-      </div>
-      <div class="quizGrid">
-        <a class="quizCard" v-for="quiz in quizzes" :key="quiz.id" :href="`/quiz/${quiz.id}`" :style="{ backgroundImage: `url(${quiz.picture})` }">
-          <h4 class="quizTitle">{{ quiz.title }}</h4>
-          <div class="quizTags">
-          </div>
-          <div class="quizInfo">
-            <p class="quizDate">{{ formatDate(quiz.created_at) }}</p> 
-            <p class="quizPlays">{{ quiz.all_time_plays }} plays</p>
-            <p class="quizDate"> {{ dateString }}</p> 
-          </div>
-        </a>
-      </div>
+  <div class="quizContainer">
+    <div class="pageHeading">
+      <h1>Explore What's <span class="hot">Hot!</span></h1>
+      <p>Leap into our most popular quizzes and see what's capturing everyone's curiosity!</p>
     </div>
-  </template>
+    <div class="quizGrid">
+      <a class="quizCard" v-for="quiz in quizzes" :key="quiz.id" :href="`/quiz/${quiz.id}`" :style="{ backgroundImage: `url(${quiz.picture})` }">
+        <h4 class="quizTitle">{{ quiz.title }}</h4>
+        <div class="quizInfo">
+          <p class="quizPlays">{{ formatPlays(quiz[filter + '_plays']) }} plays</p> 
+          <p class="quizRating">{{ quiz.rating.toFixed(1) }}⭐</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</template>
 
 <script>
 export default {
@@ -51,6 +48,15 @@ export default {
     const day = date.getDate();
     const year = date.getFullYear().toString().substr(-2);
     return `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+  },
+  formatPlays(plays) {
+    if (plays < 1000) {
+      return plays; 
+    } else if (plays < 1000000) {
+      return (plays / 1000).toFixed(1) + 'k'; 
+    } else {
+      return (plays / 1000000).toFixed(1) + 'm'; 
+    }
   },
     async fetchQuizzes() {
       let url = 'http://localhost:8080/api/quizzes/top/' + this.filter;
@@ -103,6 +109,7 @@ export default {
       justify-content: center;
       gap: 20px;
       width: 100%;
+      
   }
   .quizCard {
     position: relative;
@@ -115,7 +122,8 @@ export default {
       border-radius: 10px;
       height: 150px;
       transition: 0.3s all ease-in-out;
-      max-width: 150px;
+      max-width: 200px;
+      min-width: 200px;
       text-decoration: none;
       background-size: cover;
       
@@ -174,15 +182,18 @@ export default {
   }
   
   .quizInfo {
-      display: flex;
-      justify-content: space-between; 
-      flex-direction: row;
-      align-items: flex-end;
-      font-size: small;
-      width: 100%;
-  }
-  .quizInfo p {
-      margin: 0; 
-      margin-top: 4px; 
-  }
+  display: flex;
+  justify-content: space-between; 
+  flex-direction: row;
+  align-items: flex-end;
+  font-size: small;
+  width: 100%;
+  gap: 10px; 
+}
+
+.quizInfo p {
+  margin: 0; 
+  margin-top: 4px; 
+}
+
 </style>

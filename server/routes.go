@@ -1,14 +1,30 @@
 package server
 
-import "quizcat/auth"
+import (
+	"quizcat/auth"
+	"time"
+
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/limiter"
+)
 
 func SetupRoutes(s *Server) {
 	authMiddleware := auth.ValidateUser(s.Session)
+	limter := limiter.New(limiter.Config{
+		Max:        1,
+		Expiration: 24 * time.Hour,
+		KeyGenerator: func(c fiber.Ctx) string {
+			return c.Get("x-forwarded-for")
+		},
+		LimitReached: func(c fiber.Ctx) error {
+			return c.SendString("You have reached the limit of requests")
+		},
+	})
 	// quiz handlers
 	s.App.Post("/api/quiz", s.QuizHandler.CreateQuiz)                           // create quiz
 	s.App.Get("/api/quiz/:id", s.QuizHandler.GetQuizByID)                       // get quiz by id
 	s.App.Put("/api/quiz/:id/complete", s.QuizHandler.IncrementPlays)           // increment plays
-	s.App.Put("/api/quiz/:id/rate", s.QuizHandler.RateQuiz, authMiddleware)     // rate quiz
+	s.App.Put("/api/quiz/:id/rate", s.QuizHandler.RateQuiz, authMiddleware, limter)     // rate quiz
 	s.App.Get("/api/quiz/:id/rating", s.QuizHandler.GetRating)                  // get rating
 	s.App.Get("/api/quizzes/top/:period", s.QuizHandler.GetTopQuizzesPerPeriod) // get top quizzes per period
 	s.App.Get("/api/quizzes/search", s.QuizHandler.SearchQuizzes)               // search quizzes
@@ -17,6 +33,7 @@ func SetupRoutes(s *Server) {
 	// user handlers
 	s.App.Post("/api/signup", s.UserHandler.CreateUser) // create user
 	s.App.Post("/api/login", s.UserHandler.Login)       // login
+	s.App.Get("/api/isAuth", s.UserHandler.IsAuth)      // check if user is authenticated
 
 	// category handlers
 	s.App.Post("/api/category", s.CategoryHandler.CreateCategory, authMiddleware)                        // create category

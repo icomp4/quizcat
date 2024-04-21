@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"quizcat/model"
 	"quizcat/service"
+	"quizcat/util"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/session"
@@ -40,8 +41,8 @@ func (u *UserHandler) CreateUser(c fiber.Ctx) error {
 	if err := json.Unmarshal(c.Body(), &user); err != nil {
 		return u.writeErrorWithLog(c, fiber.StatusBadRequest, err.Error())
 	}
-	if user.Email == "" || user.Username == "" || user.Password == "" {
-		return u.writeError(c, fiber.StatusBadRequest, "missing required fields")
+	if err := util.ValidateUser(&user); err != nil {
+		return u.writeError(c, fiber.StatusBadRequest, err.Error())
 	}
 
 	if err := u.service.CreateUser(&user); err != nil {
@@ -84,3 +85,23 @@ func (u *UserHandler) Login(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
 
+func (u *UserHandler) IsAuth(c fiber.Ctx) error {
+	sess, err := u.store.Get(c)
+	if err != nil {
+		return u.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
+	}
+	isAuth, ok := sess.Get("isAuth").(bool)
+	if !ok {
+		return u.writeError(c, fiber.StatusUnauthorized, "unauthorized")
+	}
+	userID, ok := sess.Get("userID").(int)
+	if !ok {
+		return u.writeError(c, fiber.StatusUnauthorized, "unauthorized")
+	}
+
+	resp := fiber.Map{
+		"isAuth": isAuth,
+		"userID": userID,
+	}
+	return c.Status(fiber.StatusOK).JSON(resp)
+}

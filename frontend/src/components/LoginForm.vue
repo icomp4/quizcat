@@ -37,6 +37,7 @@ export default {
             
             fetch('http://localhost:8080/api/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },

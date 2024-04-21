@@ -48,6 +48,9 @@ func (q *QuizHandler) CreateQuiz(c fiber.Ctx) error {
 	quiz.MonthlyPlays = 0
 	quiz.Rating = 0
 	quiz.AmountOfRatings = 0
+	if err := util.ValidateQuiz(&quiz); err != nil {
+		return q.writeError(c, fiber.StatusBadRequest, err.Error())
+	}
 	if err := q.service.CreateQuiz(&quiz); err != nil {
 		return q.writeErrorWithLog(c, fiber.StatusInternalServerError, err.Error())
 	}
