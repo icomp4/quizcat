@@ -15,7 +15,7 @@
                 <input type="password" id="password" v-model="password" class="form-control" required/>
             </div>
             <button type="submit" class="btn btn-primary">Sign Up</button>
-            <p class="alreadyTxt">Already have an account? <a href="login" style="color: #4169E1; text-decoration: none;">Login</a></p>
+            <p class="alreadyTxt">Already have an account? <router-link to="/login" class="loginLink"  style="color: #4169E1; text-decoration: none;">Login</router-link></p>
             <p class="signupFailed" v-html="signupFailedMsg"></p>
         </form>
     </div>
@@ -50,7 +50,7 @@ export default {
                 if (response.ok) {
                     window.location.href = '/';
                 } else if (response.status === 500) {
-                    this.signupFailedMsg = 'This email or username is already in use. If it belongs to you, please <a href="/login" style="color: #4169E1;">sign in</a>.';
+                    this.signupFailedMsg = 'This email or username is already in use. If it belongs to you, please <router-link to="/login" class="loginLink">Login</router-link>';
                 }else{
                     this.signupFailedMsg = 'An error occurred. Please try again.';
                 }

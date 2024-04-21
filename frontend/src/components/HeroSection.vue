@@ -4,9 +4,10 @@
         <div class="text-container">
             <h1>Welcome to QuizCat!</h1>
             <p class="caption">Purr-fect Trivia</p>
-            <a href="/trending">
-                <button class="discover-btn">Discover Quizzes</button>
-            </a>
+            <router-link to="/trending" custom v-slot="{navigate}">
+                <button class="discover-btn" @click="navigate">Discover Quizzes</button>
+            </router-link>
+
         </div>
     </div>
 </template>

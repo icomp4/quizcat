@@ -11,7 +11,7 @@
                 <input type="password" id="password" v-model="password" class="form-control" required/>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
-            <p class="newTxt">New around here? <a href="signup" style="color: #4169E1; text-decoration: none;">Sign up</a></p>
+            <p class="newTxt">New around here? <router-link to="/signup" class="signUpTxt" style="color: #4169E1; text-decoration: none;">Signup</router-link></p>
             <p class="loginFailed" v-html="loginFailedMsg"></p>
         </form>
     </div>
