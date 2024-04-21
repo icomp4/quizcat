@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         checkAuthentication() {
-            fetch('http://localhost:8080/api/isAuth', {
+            fetch('/api/isAuth', {
                 credentials: 'include',
             })
             .then(response => response.json())
@@ -100,7 +100,7 @@ export default {
                 }))
             };
 
-            fetch('http://localhost:8080/api/quiz', {
+            fetch('/api/quiz', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

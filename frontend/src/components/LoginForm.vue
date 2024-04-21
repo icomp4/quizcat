@@ -35,7 +35,7 @@ export default {
                 password: this.password,
             };
             
-            fetch('http://localhost:8080/api/login', {
+            fetch('/api/login', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

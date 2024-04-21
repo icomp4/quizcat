@@ -61,7 +61,7 @@
     methods: {
       submitRating() {
       const quizId = this.$route.params.id;
-      fetch(`http://localhost:8080/api/quiz/${quizId}/rate`, {
+      fetch(`/api/quiz/${quizId}/rate`, {
         credentials: 'include', 
         method: 'PUT',
         headers: {
@@ -129,7 +129,7 @@
       },
       fetchQuizData() {
         const quizId = this.$route.params.id;
-        fetch(`http://localhost:8080/api/quiz/${quizId}`)
+        fetch(`/api/quiz/${quizId}`)
           .then(response => response.json())
           .then(data => {
             this.quiz = data;

@@ -59,9 +59,9 @@ export default {
     }
   },
     async fetchQuizzes() {
-      let url = 'http://localhost:8080/api/quizzes/top/' + this.filter;
+      let url = '/api/quizzes/top/' + this.filter;
       if (this.searchQuery) {
-        url = `http://localhost:8080/api/quizzes/search?param=${this.searchQuery}`;
+        url = `/api/quizzes/search?param=${this.searchQuery}`;
       }
       
       try {

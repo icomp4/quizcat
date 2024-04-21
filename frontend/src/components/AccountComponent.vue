@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         fetchAccountInfo() {
-            fetch('http://localhost:8080/api/user', {
+            fetch('/api/user', {
                 credentials: 'include',
             })
             .then(response => response.json())
@@ -44,7 +44,7 @@ export default {
             });
         },
         fetchUserQuizzes() {
-            fetch('http://localhost:8080/api/user/quizzes', {
+            fetch('/api/user/quizzes', {
                 credentials: 'include',
             })
             .then(response => response.json())
@@ -53,7 +53,7 @@ export default {
             });
         },
         deleteQuiz(id) {
-        fetch(`http://localhost:8080/api/quiz/${id}`, {
+        fetch(`/api/quiz/${id}`, {
             method: 'DELETE',
             credentials: 'include',
         })
