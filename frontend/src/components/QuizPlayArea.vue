@@ -90,6 +90,28 @@
       },
       endQuiz() {
         clearInterval(this.quizTimeUpdater);
+          this.isQuizEnd = true; 
+          const quizId = this.$route.params.id;
+          console.log('Quiz completed:', quizId);
+          fetch(`/api/quiz/${quizId}/complete`, {
+            credentials: 'include',
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Quiz completion confirmed:', data);
+          })
+          .catch(error => {
+            console.error('Error completing quiz:', error);
+          });
       },
       shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -99,9 +121,12 @@
         return array;
       },
       checkAnswer(answer) {
+        if (this.isQuizEnd) {
+          return; 
+        }
         this.selectedAnswer = answer;
         this.showCorrectAnswer = true;
-        if (answer.is_correct && this.isQuizEnd === false) {
+        if (answer.is_correct && !this.isQuizEnd) { 
           this.correctAnswers++;
         }
         setTimeout(() => {
