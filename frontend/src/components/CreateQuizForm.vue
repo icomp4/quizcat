@@ -31,7 +31,7 @@
                 <button type="submit" class="create-btn">Create Quiz</button>
             </form>
         </div>
-        <p v-else>Please <router-link to="/login" class="loginLink">Login</router-link> to create a quiz!</p>
+        <p v-else>Please <router-link to="/login" class="loginLink" style="color: #4169E1; text-decoration: none;">Login</router-link> to create a quiz!</p>
     </div>
 </template>
 
