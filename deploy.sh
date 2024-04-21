@@ -1,15 +1,19 @@
 #!/bin/bash
 
-cd frontend || exit
+set -e
+
+# Build the Vue.js frontend
+echo "Building Vue.js frontend..."
+cd frontend
+npm install
 npm run build
-
 cd ..
 
-cd migrate/up || exit
+# Compile the main Go application
+echo "Compiling main Go application..."
+cd migrate/up
+GOOS=linux GOARCH=amd64 go build -o migrate
+cd ../..
+GOOS=linux GOARCH=amd64 go build -o mainapp
 
-go run main.go
-
-cd ..
-cd ..
-
-go run main.go
+echo "Build and compilation process completed successfully."
