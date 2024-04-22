@@ -34,7 +34,7 @@ func SetupRoutes(s *Server) {
 	// user handlers
 	s.App.Post("/api/signup", s.UserHandler.CreateUser) // create user
 	s.App.Post("/api/login", s.UserHandler.Login)       // login
-	s.App.Get("/api/logout", s.UserHandler.Logout)      // logout
+	s.App.Post("/api/logout", s.UserHandler.Logout)      // logout
 	s.App.Get("/api/user", s.UserHandler.GetUser)       // get user
 	s.App.Get("/api/isAuth", s.UserHandler.IsAuth)      // check if user is authenticated
 
