@@ -1,10 +1,10 @@
-# quizCat
+# QuizCat
 
-quizCat is a dynamic web application designed for creating and interacting with quizzes. Built with Go and the Fiber framework, it offers a lightweight, yet powerful platform for users to explore, learn or just have fun! Users can create quizzes, rate them, and track quiz plays over various periods. Additionally, QuizCat supports user authentication and categorization of quizzes, enhancing the organization and accessibility of content.
+QuizCat is a dynamic web application designed for creating and interacting with quizzes. Built with Go and the Fiber framework, it offers a lightweight, yet powerful platform for users to explore, learn or just have fun! Users can create quizzes, rate them, and track quiz plays over various periods. Additionally, QuizCat supports user authentication and categorization of quizzes, enhancing the organization and accessibility of content.
 
 ## Features
 
-quizCat provides several endpoints for managing quizzes, users, and categories:
+QuizCat provides several endpoints for managing quizzes, users, and categories:
 
 ### Quiz Endpoints
 
@@ -16,11 +16,15 @@ quizCat provides several endpoints for managing quizzes, users, and categories:
 - **GET /api/quizzes/top/:period**: Retrieve the top quizzes for a specified period (e.g., daily, weekly, monthly).
 - **GET /api/quizzes/search**: Search for quizzes based on a query parameter.
 - **DELETE /api/quiz/:id**: Delete a quiz.
+- **GET /api/user/quizzes**: Get all quizzes from current user.
 
 ### User Endpoints
 
 - **POST /api/signup**: Sign up a new user.
 - **POST /api/login**: Log in an existing user.
+- **POST /api/logout**: Log out the current user.
+- **GET /api/user**: Retrieve all info on the current user.
+-	**GET /api/isAuth** Returns isAuth: true or false depending on session data. 
 
 ### Category Endpoints
 
