@@ -43,6 +43,8 @@ func main() {
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders:     "Content-Type, Authorization",
 	}))
+	go util.StartPlayCountResetScheduler(db)
+	
 	app.App.Static("/", "./frontend/dist")
 	server.SetupRoutes(app)
 	app.App.Get("/*", func(c fiber.Ctx) error {
@@ -50,7 +52,11 @@ func main() {
     })
 	port := os.Getenv("PORT")
 	portStr := fmt.Sprintf("0.0.0.0:%s", port)
-	log.Fatal(app.App.Listen(portStr))
-	util.StartPlayCountResetScheduler(db)
-	select {}
+	go func() {
+        if err := app.App.Listen(portStr); err != nil {
+            log.Fatalf("Error starting server: %v", err)
+        }
+    }()
+	
+	select{}
 }

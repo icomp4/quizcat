@@ -10,6 +10,7 @@ import (
 
 func StartPlayCountResetScheduler(db *sql.DB) (*cron.Cron, error) {
 	c := cron.New()
+	fmt.Println("Starting play count reset scheduler...")
 	playsService := service.NewPlaysService(db)
 
 	if _, err := c.AddFunc("@midnight", playsService.ResetDailyPlays); err != nil {
